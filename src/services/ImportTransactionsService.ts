@@ -50,7 +50,7 @@ class ImportTransactionsService {
       },
     });
 
-    /* const existentCategoriesTitles = existentCategories.map(
+    const existentCategoriesTitles = existentCategories.map(
       (category: Category) => category.title,
     );
 
@@ -77,17 +77,15 @@ class ImportTransactionsService {
           category => category.title === transaction.category,
         ),
       })),
-    ); */
+    );
     console.log(existentCategories);
     console.log(categories);
 
-    /* await transactionsRepository.save(createdTransactions);
+    await transactionsRepository.save(createdTransactions);
 
     await fs.promises.unlink(filePath);
 
-    return createdTransactions; */
-
-    // console.log(categories);
+    return createdTransactions;
   }
 }
 
