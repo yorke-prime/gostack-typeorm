@@ -9,6 +9,9 @@ import AppError from './errors/AppError';
 
 import createConnection from './database';
 
+import './models/Transaction';
+import './models/Category';
+
 createConnection();
 const app = express();
 
