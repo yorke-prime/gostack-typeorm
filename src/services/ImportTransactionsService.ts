@@ -1,6 +1,7 @@
 import { getCustomRepository, getRepository, In } from 'typeorm';
 import csvParse from 'csv-parse';
 import fs from 'fs';
+import AppError from '../errors/AppError';
 import Transaction from '../models/Transaction';
 import Category from '../models/Category';
 import TransactionsRepository from '../repositories/TransactionsRepository';
@@ -11,6 +12,10 @@ interface CSVTransactions {
   value: number;
   category: string;
 }
+
+/* interface CategoryTest {
+  title: string;
+} */
 
 class ImportTransactionsService {
   async execute(filePath: string): Promise<Transaction[]> {
@@ -44,11 +49,16 @@ class ImportTransactionsService {
 
     await new Promise(resolve => parseCSV.on('end', resolve));
 
-    const existentCategories = await categoriesRepository.find({
-      where: {
-        title: In(categories),
-      },
-    });
+    let existentCategories;
+    try {
+      existentCategories = await categoriesRepository.find({
+        where: {
+          title: In(categories),
+        },
+      });
+    } catch (e) {
+      throw new AppError(e);
+    }
 
     const existentCategoriesTitles = existentCategories.map(
       (category: Category) => category.title,
@@ -78,8 +88,9 @@ class ImportTransactionsService {
         ),
       })),
     );
+
     console.log(existentCategories);
-    console.log(categories);
+    // console.log(categories);
 
     await transactionsRepository.save(createdTransactions);
 
