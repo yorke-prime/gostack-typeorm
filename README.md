@@ -89,6 +89,14 @@ body
 
   * 400: Bad Request
 
+### Deletar Transação
+
+* Método DELETE
+
+* Response:
+  * 200: Sucess
+
+  * 404: Not found
 
 
 ### Inicializar
